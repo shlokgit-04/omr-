@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API = axios.create({ baseURL: 'http://localhost:5000/api' });
+const API = axios.create({ baseURL: '/api' });
 
 // Exams
 export const getExams = () => API.get('/exams');
@@ -15,6 +15,6 @@ export const submitStudent = (data) => API.post('/students', data);
 export const deleteStudent = (id) => API.delete(`/students/${id}`);
 
 // Export
-export const getExportUrl = (examId) => `http://localhost:5000/api/export/${examId}`;
+export const getExportUrl = (examId) => `/api/export/${examId}`;
 
 export default API;

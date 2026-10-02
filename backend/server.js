@@ -2,6 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const path = require('path');
+const fs = require('fs');
 
 const examRoutes = require('./routes/exams');
 const studentRoutes = require('./routes/students');
@@ -38,13 +40,6 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// 404 Handler
-app.use((req, res) => {
-  res.status(404).json({
-    error: 'Route not found'
-  });
-});
-
 // Error Handler
 app.use((err, req, res, next) => {
   console.error(err.stack);
@@ -54,15 +49,37 @@ app.use((err, req, res, next) => {
   });
 });
 
+// SPA fallback + 404 Handler
+app.use((req, res) => {
+  const distDir = path.join(__dirname, '..', 'frontend', 'dist');
+  const indexFile = path.join(distDir, 'index.html');
+  if (!req.path.startsWith('/api') && fs.existsSync(indexFile)) {
+    return res.sendFile(indexFile);
+  }
+  res.status(404).json({
+    error: 'Route not found'
+  });
+});
+
 // Start Server
 async function startServer() {
   try {
-    await mongoose.connect(MONGO_URI);
+    let uri = MONGO_URI;
+    if (!uri) {
+      // No MongoDB configured: spin up a temporary in-memory database
+      // so the app runs anywhere. Data resets when the server restarts.
+      const { MongoMemoryServer } = require('mongodb-memory-server');
+      const mem = await MongoMemoryServer.create();
+      uri = mem.getUri();
+      console.log('⚠️  No MONGO_URI set, using in-memory MongoDB (data resets on restart)');
+    }
 
-    console.log('✅ Connected to MongoDB Atlas');
+    await mongoose.connect(uri);
+
+    console.log('✅ Connected to MongoDB');
 
     app.listen(PORT, () => {
-      console.log(`🚀 OMR Checker API running on port ${PORT}`);
+      console.log(`🚀 OMR Checker running on port ${PORT}`);
     });
 
   } catch (err) {
