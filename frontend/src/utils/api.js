@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API = axios.create({ baseURL: '/api' });
+const API = axios.create({ baseURL: '/api', withCredentials: true });
 
 // Exams
 export const getExams = () => API.get('/exams');

@@ -3,12 +3,13 @@ const router = express.Router();
 const Student = require('../models/Student');
 const Exam = require('../models/Exam');
 const { Parser } = require('json2csv');
+const { requireAuth, requireExamOwner } = require('../middleware/auth');
 
-// GET /api/export/:examId  → CSV download
-router.get('/:examId', async (req, res) => {
+// GET /api/export/:examId  → CSV download (exam owner only)
+router.get('/:examId', requireAuth, async (req, res) => {
   try {
-    const exam = await Exam.findById(req.params.examId);
-    if (!exam) return res.status(404).json({ error: 'Exam not found' });
+    const exam = await requireExamOwner(req.params.examId, req, res);
+    if (!exam) return;
 
     const students = await Student.find({ examId: req.params.examId }).sort({ submittedAt: 1 });
 

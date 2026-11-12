@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Privacy Policy — OMR Checker</title>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: #f6f8fb; color: #1e293b; line-height: 1.7; }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 48px 24px 64px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.05rem; color: #0f172a; text-decoration: none; margin-bottom: 32px; }
+  .brand .logo { width: 34px; height: 34px; border-radius: 9px; background: linear-gradient(135deg, #2563eb, #7c3aed); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 17px; }
+  h1 { font-size: 2rem; letter-spacing: -0.02em; margin-bottom: 6px; color: #0f172a; }
+  .updated { color: #64748b; font-size: 0.9rem; margin-bottom: 36px; }
+  h2 { font-size: 1.15rem; margin: 28px 0 10px; color: #0f172a; }
+  p, li { color: #334155; font-size: 0.98rem; }
+  ul { padding-left: 22px; margin: 8px 0; }
+  li { margin-bottom: 6px; }
+  .card { background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 22px 24px; margin: 14px 0; }
+  a { color: #2563eb; }
+  .footer { margin-top: 48px; padding-top: 20px; border-top: 1px solid #e2e8f0; color: #64748b; font-size: 0.9rem; text-align: center; }
+  .footer a { color: #0f172a; font-weight: 600; text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="brand" href="/"><span class="logo">📋</span> OMR Checker</a>
+  <h1>Privacy Policy</h1>
+  <p class="updated">Last updated: November 12, 2026</p>
+
+  <p>OMR Checker is a tool for creating multiple-choice exams and grading OMR answer sheets. This policy explains, in plain language, what the app stores, what it never does, and how you stay in control of your data.</p>
+
+  <h2>What we store</h2>
+  <div class="card">
+    <ul>
+      <li><strong>Your account:</strong> the name and email you sign up with, plus a securely hashed password (bcrypt). We never store your actual password.</li>
+      <li><strong>Exam data you create:</strong> exam names, the number of questions, and the answer keys you enter.</li>
+      <li><strong>Student submissions:</strong> the roll number, the answers a student selected, and the auto-computed score, percentage, and submission time.</li>
+      <li><strong>A session cookie:</strong> a single HTTP-only cookie that keeps you signed in for up to 7 days. It contains no personal information you can read, and it is not used for advertising or tracking.</li>
+    </ul>
+  </div>
+
+  <h2>What we never do</h2>
+  <div class="card">
+    <ul>
+      <li>We do not run third-party analytics, ad trackers, or social widgets.</li>
+      <li>We do not sell or share your data with anyone.</li>
+      <li>We do not send marketing email. The email address is used only for your account.</li>
+    </ul>
+  </div>
+
+  <h2>Answer keys stay private</h2>
+  <p>Exam answer keys are only ever sent to the signed-in teacher who owns the exam. When a student opens a submission link, the app sends them the exam's structure (name and question count) but never the answer key. Grading happens on the server.</p>
+
+  <h2>Data lifetime</h2>
+  <p>Exam and result records are kept until you delete them. You can delete an exam (and all of its student records with it) from the dashboard, or delete individual student records from the exam page. Deleting an exam is permanent.</p>
+
+  <h2>Your rights</h2>
+  <div class="card">
+    <ul>
+      <li><strong>Export:</strong> request a machine-readable export of your account, exams, and results, and you receive everything we hold for you.</li>
+      <li><strong>Erasure:</strong> delete your account, and your profile, every exam you created, and every student result tied to those exams are permanently removed.</li>
+      <li>Both are available from your account menu in the app, or by writing to <a href="mailto:vaneshlok04@gmail.com">vaneshlok04@gmail.com</a>.</li>
+    </ul>
+  </div>
+
+  <h2>Hosting note</h2>
+  <p>OMR Checker currently runs on free-tier hosting that may restart occasionally. On a restart the in-memory database starts empty, so records may reset; treat the live demo as a demonstration environment and keep your own copy of important result exports.</p>
+
+  <div class="footer">
+    Questions about this policy? <a href="mailto:vaneshlok04@gmail.com">vaneshlok04@gmail.com</a><br/>
+    Made by <a href="https://shlok.is-a.dev">Shlok V.</a>
+  </div>
+</div>
+</body>
+</html>

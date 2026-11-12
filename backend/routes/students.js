@@ -2,12 +2,15 @@ const express = require('express');
 const router = express.Router();
 const Student = require('../models/Student');
 const Exam = require('../models/Exam');
+const { requireAuth, requireExamOwner } = require('../middleware/auth');
 
-// GET students for an exam
-router.get('/', async (req, res) => {
+// GET students for an exam (teacher only)
+router.get('/', requireAuth, async (req, res) => {
   try {
     const { examId } = req.query;
     if (!examId) return res.status(400).json({ error: 'examId query param required' });
+    const exam = await requireExamOwner(examId, req, res);
+    if (!exam) return;
     const students = await Student.find({ examId }).sort({ submittedAt: -1 });
     res.json(students);
   } catch (err) {
@@ -15,10 +18,10 @@ router.get('/', async (req, res) => {
   }
 });
 
-// GET single student result
+// GET single student result (public: a student follows their own result link)
 router.get('/:id', async (req, res) => {
   try {
-    const student = await Student.findById(req.params.id).populate('examId');
+    const student = await Student.findById(req.params.id).populate('examId', 'name totalQuestions');
     if (!student) return res.status(404).json({ error: 'Student not found' });
     res.json(student);
   } catch (err) {
@@ -26,7 +29,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// POST submit student answers → auto-grade
+// POST submit student answers → auto-grade (public: students submit from a link)
 router.post('/', async (req, res) => {
   try {
     const { examId, rollNumber, answers } = req.body;
@@ -59,17 +62,20 @@ router.post('/', async (req, res) => {
     });
     await student.save();
 
-    res.status(201).json({ ...student.toObject(), answerKey: exam.answerKey, examName: exam.name });
+    res.status(201).json({ ...student.toObject(), examName: exam.name });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// DELETE student record
-router.delete('/:id', async (req, res) => {
+// DELETE student record (exam owner only)
+router.delete('/:id', requireAuth, async (req, res) => {
   try {
-    const student = await Student.findByIdAndDelete(req.params.id);
+    const student = await Student.findById(req.params.id);
     if (!student) return res.status(404).json({ error: 'Student not found' });
+    const exam = await requireExamOwner(student.examId, req, res);
+    if (!exam) return;
+    await Student.findByIdAndDelete(req.params.id);
     res.json({ message: 'Student record deleted' });
   } catch (err) {
     res.status(500).json({ error: err.message });
