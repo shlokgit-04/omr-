@@ -5,6 +5,11 @@ FROM node:22-bookworm-slim
 # Cache the embedded MongoDB binary in the image so first boot is fast.
 ENV MONGOMS_DOWNLOAD_DIR=/app/.cache/mongodb-binaries
 
+# Runtime libs the mongod binary links against (libcurl.so.4 etc.).
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends libcurl4 libssl3 liblzma5 ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 
 # --- frontend build ---
